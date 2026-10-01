@@ -13,7 +13,6 @@ ADMBD project.
 4. [Deployment and Architecture Analysis](04-deployment-architecture.md)
 5. [Backup Policy Specification](05-backup-policy.md)
 6. [Scalability and Elasticity Plan](06-scalability-elasticity.md)
-7. [Use of Generative AI](07-generative-ai.md)
 
 ## Diagrams
 

@@ -16,7 +16,6 @@ ADMBD_1221715_1131504/
 │   │   ├── 04-deployment-architecture.md
 │   │   ├── 05-backup-policy.md
 │   │   ├── 06-scalability-elasticity.md
-│   │   ├── 07-generative-ai.md
 │   │   └── diagrams/
 │   │
 │   └── iteration2/
