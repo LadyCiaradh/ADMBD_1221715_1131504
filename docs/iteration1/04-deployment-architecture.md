@@ -27,6 +27,9 @@ Databases are thus not directly accessible to any passenger, driver or administr
 Django is in charge of enforcing the business logic discussed above and accessing the databases, PostgreSQL and MongoDB.
 
 ## 4.3 Prototype Deployment
+The proposed prototype deployment is illustrated below.
+![Prototype Deployment Architecture](diagrams/prototype-deployment.png)
+
 For the purpose of development and academic validation, it is intended that the prototype will operate in a local environment.
 
 Both application and database layers can be containerized using Docker Compose, into:
