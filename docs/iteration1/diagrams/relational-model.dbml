@@ -1,0 +1,173 @@
+Project TVDE_Relational_Model {
+  database_type: 'PostgreSQL'
+  Note: '''
+    Ride-Hailing Platform (TVDE)
+    Relational model for the transactional core of the application.
+    PostgreSQL is the authoritative data store for business data.
+  '''
+}
+
+Table Passenger {
+  passenger_id bigint [pk, increment]
+
+  first_name varchar(100) [not null]
+  last_name varchar(100) [not null]
+
+  email varchar(254) [not null, unique]
+  phone_number varchar(20) [not null, unique]
+
+  status varchar(20) [not null]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: 'Registered passenger that can request trips.'
+}
+
+Table Driver {
+  driver_id bigint [pk, increment]
+
+  first_name varchar(100) [not null]
+  last_name varchar(100) [not null]
+
+  email varchar(254) [not null, unique]
+  phone_number varchar(20) [not null, unique]
+
+  license_number varchar(50) [not null, unique]
+  license_expiry_date date [not null]
+
+  status varchar(20) [not null]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: 'Driver registered and authorized to perform trips.'
+}
+
+Table Vehicle {
+  vehicle_id bigint [pk, increment]
+
+  registration_number varchar(20) [not null, unique]
+
+  make varchar(100) [not null]
+  model varchar(100) [not null]
+
+  manufacture_year int [not null]
+  capacity int [not null]
+
+  status varchar(20) [not null]
+
+  created_at timestamp [not null]
+
+  Note: 'Vehicle registered and authorized for use on the platform.'
+}
+
+Table DriverVehicle {
+  driver_vehicle_id bigint [pk, increment]
+
+  driver_id bigint [not null]
+  vehicle_id bigint [not null]
+
+  valid_from timestamp [not null]
+  valid_until timestamp
+
+  active boolean [not null, default: true]
+
+  Note: '''
+    Associative entity between Driver and Vehicle.
+    Allows driver-vehicle assignments to be maintained historically.
+  '''
+}
+
+Table Trip {
+  trip_id bigint [pk, increment]
+
+  passenger_id bigint [not null]
+
+  driver_id bigint
+  vehicle_id bigint
+
+  pickup_latitude decimal(9,6) [not null]
+  pickup_longitude decimal(9,6) [not null]
+
+  destination_latitude decimal(9,6) [not null]
+  destination_longitude decimal(9,6) [not null]
+
+  requested_at timestamp [not null]
+  accepted_at timestamp
+  started_at timestamp
+  completed_at timestamp
+  cancelled_at timestamp
+
+  status varchar(30) [not null]
+
+  estimated_price decimal(10,2) [not null]
+  final_price decimal(10,2)
+
+  Note: '''
+    Central transactional entity.
+    Driver and vehicle may initially be NULL while the trip is waiting
+    for assignment.
+  '''
+}
+
+Table Payment {
+  payment_id bigint [pk, increment]
+
+  trip_id bigint [not null, unique]
+
+  amount decimal(10,2) [not null]
+  method varchar(30) [not null]
+  status varchar(30) [not null]
+
+  provider_reference varchar(255)
+
+  created_at timestamp [not null]
+  paid_at timestamp
+
+  Note: '''
+    Payment associated with a trip.
+    Sensitive payment card information is not stored.
+  '''
+}
+
+Table Rating {
+  rating_id bigint [pk, increment]
+
+  trip_id bigint [not null]
+
+  rater_type varchar(20) [not null]
+
+  score int [not null]
+  comment text
+
+  created_at timestamp [not null]
+
+  indexes {
+    (trip_id, rater_type) [unique]
+  }
+
+  Note: '''
+    Feedback submitted after a completed trip.
+    Each participant can submit at most one rating per trip.
+  '''
+}
+
+
+/* ================================
+   Relationships
+   ================================ */
+
+Ref: Trip.passenger_id > Passenger.passenger_id
+
+Ref: Trip.driver_id > Driver.driver_id
+
+Ref: Trip.vehicle_id > Vehicle.vehicle_id
+
+Ref: DriverVehicle.driver_id > Driver.driver_id
+
+Ref: DriverVehicle.vehicle_id > Vehicle.vehicle_id
+
+Ref: Payment.trip_id - Trip.trip_id
+
+Ref: Rating.trip_id > Trip.trip_id

@@ -26,6 +26,13 @@ The initial distribution is the following:
 PostgreSQL is deemed as the source of truth in regards to the business status of a trip. Although MongoDB can make use of PostgreSQL objects using their IDs, the operational document does not take precedence over the relational business document.
 
 ## 3.2 PostgreSQL Relational Model
+
+The following diagram presents the initial relational model for the transactional component of the Ride-Hailing Platform.
+
+![PostgreSQL Relational Model](diagrams/relational-model.png)
+
+The diagram represents the main entities, identifiers, relationships and cardinalities of the PostgreSQL model.
+
 ### 3.2.1 Conceptual Model
 
 We propose these seven relational entities:
@@ -312,7 +319,12 @@ requested_at
 
 ## 3.3 MongoDB Document Model
 
-### 3.3.1 Driver Locations
+The following diagram provides a conceptual representation of the main MongoDB collections.
+
+![MongoDB Document Model](diagrams/mongodb-model.png)
+
+The diagram is intended to represent the structure of the MongoDB documents rather than a relational schema. References to PostgreSQL identifiers are logical application-level references and do not represent foreign-key constraints.
+
 ### 3.3.1 Driver Locations
 
 The `driver_locations` collection stores operational observations of driver location and availability.
