@@ -97,18 +97,20 @@ The cloud deployment may help with the following:
 Such benefits will not reduce the responsibility of the team for designing the database, configuring the security settings, setting the backup policy, monitoring and analysis of performance.
 
 ## 4.5 Selected Deployment Approach
-For the purpose of production deployment of the Ride-Hailing Platform, the team suggests an architecture based on cloud resources.
 
-The main motivation for choosing such an approach comes from the variability of the load for the platform which can be unevenly distributed.
-It means that a Ride-Hailing Platform can face fluctuations in the number of passengers, drivers, requests, location updates depending on time of day and demand.
+For the production deployment of the Ride-Hailing Platform, the team proposes a cloud-based architecture using Microsoft Azure and its managed cloud services.
 
-Thus, the required architecture should provide flexibility in expanding the application and database capacity without a need for the organization to invest in all the hardware resources upfront.
+The main motivation for selecting a cloud-based approach is the variability of the platform workload, which may be unevenly distributed over time and across different locations. A Ride-Hailing Platform can experience significant fluctuations in the number of passengers and drivers, ride requests, and real-time location updates depending on the time of day and demand.
 
-The cloud environment provides adequate tools for deployment of redundant services, database replication, monitoring and backup services that are appropriate for the application where a brief period of downtime will not allow to receive and send requests.
+To address these requirements, the proposed architecture uses Azure Container Apps to deploy the Django application and managed Azure database services for the data layer. PostgreSQL will be provided through Azure Database for PostgreSQL, while the MongoDB component will be deployed using Azure Cosmos DB for MongoDB. This approach separates the application and database layers and allows each component to be managed and scaled according to its individual workload.
 
-This does not mean that having an on-premises architecture would be necessarily technically invalid. There is a possibility that an entity that needs infrastructure control or data locality may choose an on-premises or hybrid architecture.
+Azure Container Apps provides a suitable environment for running the containerized Django application without requiring the team to manage the underlying virtual machine infrastructure directly. The application layer can therefore be scaled by increasing the number of application instances when workload increases, which is particularly relevant for a platform where demand may vary significantly throughout the day.
 
-But taking into consideration the present requirements for this project, the cloud architecture appears to be a good starting point for future growth.
+The use of managed database services also reduces the operational overhead associated with maintaining database infrastructure. Azure Database for PostgreSQL and Azure Cosmos DB provide capabilities such as automated backups, monitoring, scalability and high-availability configurations. These capabilities are particularly relevant for a ride-hailing application, where prolonged downtime could prevent passengers from requesting rides, drivers from receiving requests, and the platform from processing real-time location updates.
+
+The proposed Azure architecture can therefore be represented by three main layers: the Django application deployed through Azure Container Apps, the PostgreSQL relational database hosted through Azure Database for PostgreSQL, and the MongoDB database hosted through Azure Cosmos DB for MongoDB. Additional Azure services, such as Azure Monitor and Application Insights, can be used to monitor application performance, resource utilization and system health.
+
+This approach does not imply that an on-premises architecture would be technically unsuitable. Organizations with specific requirements concerning infrastructure control, data locality, regulatory compliance or existing hardware investments may reasonably choose an on-premises or hybrid deployment model. However, considering the expected variability of the Ride-Hailing Platform workload and the requirements of the current project, Microsoft Azure provides a suitable environment for achieving scalability, availability, monitoring and operational flexibility while providing a foundation for future growth.
 
 ## 4.6 Availability and Infrastructure Requirements
 
