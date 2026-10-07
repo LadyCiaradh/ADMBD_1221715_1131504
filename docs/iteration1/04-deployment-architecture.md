@@ -102,6 +102,9 @@ For the production deployment of the Ride-Hailing Platform, the team proposes a 
 
 The main motivation for selecting a cloud-based approach is the variability of the platform workload, which may be unevenly distributed over time and across different locations. A Ride-Hailing Platform can experience significant fluctuations in the number of passengers and drivers, ride requests, and real-time location updates depending on the time of day and demand.
 
+The proposed deployment is illustrated below.
+![Deployment](diagrams/deployment.png)
+
 To address these requirements, the proposed architecture uses Azure Container Apps to deploy the Django application and managed Azure database services for the data layer. PostgreSQL will be provided through Azure Database for PostgreSQL, while the MongoDB component will be deployed using Azure Cosmos DB for MongoDB. This approach separates the application and database layers and allows each component to be managed and scaled according to its individual workload.
 
 Azure Container Apps provides a suitable environment for running the containerized Django application without requiring the team to manage the underlying virtual machine infrastructure directly. The application layer can therefore be scaled by increasing the number of application instances when workload increases, which is particularly relevant for a platform where demand may vary significantly throughout the day.
