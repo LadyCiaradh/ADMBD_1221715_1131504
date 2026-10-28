@@ -1,5 +1,4 @@
 # ADMBD_1221715_1131504
-# ADMBD — Database Administration Project
 
 **Academic Year:** 2026/2027  
 **Institution:** ISEP  
