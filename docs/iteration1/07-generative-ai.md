@@ -2,29 +2,30 @@
 
 ## 7.1 Tool Used
 
-ChatGPT, developed by OpenAI, was used as a supporting Generative Artificial Intelligence (GenAI) tool during the development and documentation of the Ride-Hailing Platform project.
+ChatGPT created by OpenAI was one of the tools used as a helper in the first iteration of the Ride-Hailing Platform project.
 
 ## 7.2 Scope of Use
 
-The use of ChatGPT was limited to supporting the team's work, based on requirements defined and design decisions made by the group. The tool was used for the following purposes:
+There were only three areas of usage for ChatGPT:
 
-- **Documentation support:** assisting in the preparation and improvement of project documentation after the requirements and solution design had been defined by the team.
-- **Documentation validation:** supporting the review of document structure, clarity, consistency, and technical explanations. The documents produced with the assistance of ChatGPT were reviewed and validated by the group.
-- **Diagram improvement:** assisting in the refinement and improvement of diagrams initially produced by the team, while preserving the intended design and architecture.
-- **Brainstorming and solution exploration:** exploring alternative approaches and discussing potential solutions to technical and design challenges, helping the team evaluate available options.
+Help with writing and language correction: Spell-checking, grammatical and word choice improvements in the project documents without changing the technical information contained there.
 
-## 7.3 Human Review and Validation
+Brainstorming: Help with discussion of possible approaches and alternatives during the decision-making process. However, alternative evaluation and technical decisions were made by the team.
 
-All content produced or suggested by ChatGPT was treated as supporting material rather than as a definitive source of truth.
+Diagram digitization: Assistance in transferring manually drawn diagrams into a digital format without changing the structure.
 
-The group reviewed and validated the generated content, adapting it where necessary to ensure alignment with the project requirements, design decisions, and technical constraints.
+## 7.3 Review and Validation
 
-Suggestions regarding documentation, diagrams, and technical solutions were evaluated by the team before being incorporated into the project deliverables.
+All outputs assisted with AI were reviewed by the team before being included into the project.
+
+Changes in language were verified to make sure that technical meaning had not been changed. Brainstorming suggestions were evaluated in regard to project requirements, and digital diagrams were compared with manual sketches to check if they were correct.
+
+Team was responsible for design, technical decisions, documentations and outputs of the project.
 
 ## 7.4 Responsibility and Limitations
 
-The use of ChatGPT did not replace the team's responsibility for the design, implementation, documentation, and validation of the project.
+The usage of ChatGPT does not substitute the team's liability concerning the design, development, documenting and verification of the project.
 
-The group remains fully responsible for the correctness, quality, security, consistency, and technical adequacy of all submitted artefacts, including any content produced or improved with the assistance of GenAI tools.
+The full responsibility for the quality, safety, correctness, consistency and technical adequacy of all the artefacts submitted by the team falls upon the team members, whether some of the artefacts have been generated or improved using GenAI technologies.
 
-ChatGPT was used exclusively as a supporting resource. Final decisions regarding the project architecture, technical solutions, and submitted documentation remained the responsibility of the team.
+ChatGPT was used as an additional source. The ultimate decision-making process concerning the project architecture and technical solutions was made by the team itself.
