@@ -25,7 +25,7 @@ The project is organized into two iterations:
 |---|---|
 | 1221715 | Jorge Cruz |
 | 1131504 | Joana Soares |
-| [Student number] | [Full name] |
+| 1201806 | João Veríssimo |
 
 
 ## 3. Technology Stack
