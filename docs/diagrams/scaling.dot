@@ -1,0 +1,21 @@
+digraph SCALE {
+  graph [rankdir=LR, fontname="Helvetica", nodesep=0.3, ranksep=0.7, pad=0.2, compound=true];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#f4f4f4"];
+  edge  [fontname="Helvetica", fontsize=10];
+
+  subgraph cluster_now { label="Launch (25k trips/day)"; style=filled; fillcolor="#f4f4f4"; fontsize=11;
+    n_pg [label="PostgreSQL\n1 primary + 1 sync standby\n+ 1 read replica", fillcolor="#f7c6c9"];
+    n_mg [label="MongoDB\n1 replica set (3 nodes)", fillcolor="#c7e5c7"];
+  }
+  subgraph cluster_y1 { label="12 months (75k trips/day)"; style=filled; fillcolor="#eef2fb"; fontsize=11;
+    y_pg [label="PostgreSQL\nbigger primary (vertical)\n+ PgBouncer + 2 read replicas\n+ old partitions archived", fillcolor="#f7c6c9"];
+    y_mg [label="MongoDB\nlarger nodes; secondary reads\nfor reviews; TTL/compression", fillcolor="#c7e5c7"];
+  }
+  subgraph cluster_y3 { label="36 months (250k trips/day)"; style=filled; fillcolor="#e3eaf8"; fontsize=11;
+    t_pg [label="PostgreSQL\nshard by city (Citus /\napp routing) if primary saturates", fillcolor="#f7c6c9"];
+    t_mg [label="MongoDB\nsharded cluster\n(hashed driverId + ts),\nRedis geo cache optional", fillcolor="#c7e5c7"];
+  }
+
+  n_pg -> y_pg [label="CPU>70% 10 min\nlag>5 s"]; y_pg -> t_pg [label="write saturation"];
+  n_mg -> y_mg [label="working set\n> RAM"]; y_mg -> t_mg [label="write throughput\n/ data volume"];
+}

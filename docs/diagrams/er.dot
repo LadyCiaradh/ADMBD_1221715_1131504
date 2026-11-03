@@ -1,0 +1,35 @@
+digraph ER {
+  graph [rankdir=TB, fontname="Helvetica", nodesep=0.3, ranksep=0.6, ratio=0.8, pad=0.2];
+  node  [shape=plain, fontname="Helvetica", fontsize=12];
+  edge  [fontname="Helvetica", fontsize=9, arrowhead=crow, arrowtail=none, dir=both, arrowtail=tee];
+
+  app_user [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>app_user</b></font></td></tr><tr><td align="left"><u>user_id</u> PK<br align="left"/>email UQ, phone UQ<br align="left"/>role, nif, is_active<br align="left"/></td></tr></table>>];
+  driver [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>driver</b></font></td></tr><tr><td align="left"><u>driver_id</u> PK/FK<br align="left"/>operator_id FK<br align="left"/>tvde_cert_no UQ, status<br align="left"/>avg_rating, iban<br align="left"/></td></tr></table>>];
+  rider [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>rider</b></font></td></tr><tr><td align="left"><u>rider_id</u> PK/FK<br align="left"/>avg_rating<br align="left"/></td></tr></table>>];
+  tvde_operator [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>tvde_operator</b></font></td></tr><tr><td align="left"><u>operator_id</u> PK<br align="left"/>legal_name, nif UQ<br align="left"/>license_no UQ<br align="left"/></td></tr></table>>];
+  driver_document [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>driver_document</b></font></td></tr><tr><td align="left"><u>document_id</u> PK<br align="left"/>driver_id FK, doc_type<br align="left"/>valid_from, valid_until<br align="left"/></td></tr></table>>];
+  vehicle [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>vehicle</b></font></td></tr><tr><td align="left"><u>vehicle_id</u> PK<br align="left"/>category_id FK<br align="left"/>plate UQ, make, model<br align="left"/>year, seats, is_electric<br align="left"/></td></tr></table>>];
+  vehicle_category [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>vehicle_category</b></font></td></tr><tr><td align="left"><u>category_id</u> PK<br align="left"/>name UQ, base_fare<br align="left"/>per_km, per_minute, min_fare<br align="left"/></td></tr></table>>];
+  driver_vehicle [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#555555"><font color="white"><b>driver_vehicle</b></font></td></tr><tr><td align="left"><u>driver_id, vehicle_id,</u><br align="left"/><u>valid_during</u> PK<br align="left"/>EXCLUDE overlap<br align="left"/></td></tr></table>>];
+  trip [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>trip</b> (partitioned by month)</font></td></tr><tr><td align="left"><u>trip_id, requested_at</u> PK<br align="left"/>rider_id, driver_id, vehicle_id FK<br align="left"/>category_id FK, promo_code FK<br align="left"/>status, pickup, dropoff (geography)<br align="left"/>started_at, ended_at<br align="left"/>distance_km, surge_multiplier<br align="left"/></td></tr></table>>];
+  promo_code [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>promo_code</b></font></td></tr><tr><td align="left"><u>code</u> PK<br align="left"/>discount_pct<br align="left"/>valid_until, max_uses<br align="left"/></td></tr></table>>];
+  payment [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>payment</b></font></td></tr><tr><td align="left"><u>payment_id</u> PK<br align="left"/>(trip_id, trip_requested_at) FK<br align="left"/>method, status, amount<br align="left"/>vat_amount, platform_fee<br align="left"/>driver_payout, psp_reference<br align="left"/></td></tr></table>>];
+  invoice [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>invoice</b></font></td></tr><tr><td align="left"><u>invoice_id</u> PK<br align="left"/>payment_id FK UQ<br align="left"/>(series, number) UQ<br align="left"/>customer_nif, total<br align="left"/></td></tr></table>>];
+  driver_payout [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3"><tr><td bgcolor="#9b1b25"><font color="white"><b>driver_payout</b></font></td></tr><tr><td align="left"><u>payout_id</u> PK<br align="left"/>driver_id FK<br align="left"/>period_start, period_end<br align="left"/>total_amount, paid_at<br align="left"/></td></tr></table>>];
+
+  app_user -> driver [label="1:0..1 (is a)", arrowhead=none, arrowtail=none];
+  app_user -> rider  [label="1:0..1 (is a)", arrowhead=none, arrowtail=none];
+  tvde_operator -> driver [label="1:N"];
+  driver -> driver_document [label="1:N"];
+  driver -> driver_vehicle [label="1:N"];
+  vehicle -> driver_vehicle [label="1:N"];
+  vehicle_category -> vehicle [label="1:N"];
+  vehicle_category -> trip [label="1:N"];
+  rider -> trip [label="1:N"];
+  driver -> trip [label="1:N"];
+  vehicle -> trip [label="1:N"];
+  promo_code -> trip [label="0..1:N"];
+  trip -> payment [label="1:N"];
+  payment -> invoice [label="1:0..1"];
+  driver -> driver_payout [label="1:N"];
+}

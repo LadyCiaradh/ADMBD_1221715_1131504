@@ -1,0 +1,25 @@
+digraph BACKUP {
+  graph [rankdir=LR, fontname="Helvetica", nodesep=0.35, ranksep=0.8, pad=0.2];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="#f4f4f4"];
+  edge  [fontname="Helvetica", fontsize=10];
+
+  subgraph cluster_pg { label="PostgreSQL"; style=filled; fillcolor="#fdeaea"; fontsize=11;
+    pg   [label="Primary", fillcolor="#f7c6c9"];
+    pgsb [label="Sync standby", fillcolor="#f7c6c9"];
+  }
+  subgraph cluster_mg { label="MongoDB replica set"; style=filled; fillcolor="#e9f5e9"; fontsize=11;
+    mg   [label="Secondary\n(backup source)", fillcolor="#c7e5c7"];
+  }
+
+  repo1 [label="Local backup repo\n(pgBackRest: weekly full,\ndaily diff, WAL every ≤5 min)", shape=cylinder, fillcolor="#fff3cd"];
+  dumps [label="Mongo dumps\n(daily mongodump --oplog,\noplog archive)", shape=cylinder, fillcolor="#fff3cd"];
+  off   [label="Off-site object storage\n(2nd region, encrypted,\nimmutable / object lock)", shape=cylinder, fillcolor="#ffe08a"];
+  test  [label="Monthly restore test\n(side instance + checks)", fillcolor="#dde6f5"];
+
+  pg -> pgsb [label="sync streaming\n(failover, RPO≈0)", style=bold];
+  pg -> repo1 [label="base backup + WAL", style=dashed];
+  mg -> dumps [label="dump + oplog", style=dashed];
+  repo1 -> off [label="replicate"]; dumps -> off [label="replicate"];
+  off -> test [label="latest backup"];
+  test -> pg [label="validated\nRTO/RPO", style=dotted, constraint=false];
+}

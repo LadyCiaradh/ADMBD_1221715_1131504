@@ -1,0 +1,81 @@
+# RideLink prototype topology (reproduces §4 of the report at small scale)
+#   PostgreSQL: primary + synchronous standby (streaming replication) + WAL archive volume
+#   MongoDB:    3-member replica set
+# Usage: docker compose up -d    (first start takes ~1 min; credentials below are TEST values only)
+services:
+  pg-primary:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64
+    container_name: rl-pg-primary
+    environment:
+      POSTGRES_PASSWORD: test_postgres_pw
+      REPLICATION_PASSWORD: test_repl_pw
+    command: >
+      postgres -c wal_level=replica -c max_wal_senders=10 -c max_replication_slots=10
+      -c hot_standby=on -c archive_mode=on
+      -c archive_command='test ! -f /var/lib/postgresql/wal_archive/%f && cp %p /var/lib/postgresql/wal_archive/%f'
+      -c archive_timeout=300
+    ports: ["5432:5432"]
+    volumes:
+      - pg_primary_data:/var/lib/postgresql/data
+      - wal_archive:/var/lib/postgresql/wal_archive
+      - ./docker/pg/primary-init.sh:/docker-entrypoint-initdb.d/00-replication.sh:ro
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+      - ./sql/02_partitions.sql:/docker-entrypoint-initdb.d/20-partitions.sql:ro
+      - ./docker/pg/enable-sync.sh:/docker-entrypoint-initdb.d/99-enable-sync.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 30
+
+  pg-replica:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64
+    container_name: rl-pg-replica
+    user: postgres
+    environment:
+      PRIMARY_HOST: pg-primary
+      PGPASSWORD: test_repl_pw
+      PGAPPNAME: replica1
+    entrypoint: ["/bin/bash", "/replica-entrypoint.sh"]
+    ports: ["5433:5432"]
+    volumes:
+      - pg_replica_data:/var/lib/postgresql/data
+      - ./docker/pg/replica-entrypoint.sh:/replica-entrypoint.sh:ro
+    depends_on:
+      pg-primary: { condition: service_healthy }
+
+  mongo1: &mongo
+    image: mongo:7
+    container_name: rl-mongo1
+    command: ["mongod", "--replSet", "rs-ridelink", "--bind_ip_all"]
+    ports: ["27017:27017"]
+    volumes: ["mongo1_data:/data/db"]
+  mongo2:
+    <<: *mongo
+    container_name: rl-mongo2
+    ports: ["27018:27017"]
+    volumes: ["mongo2_data:/data/db"]
+  mongo3:
+    <<: *mongo
+    container_name: rl-mongo3
+    ports: ["27019:27017"]
+    volumes: ["mongo3_data:/data/db"]
+
+  mongo-init:                       # one-shot: initiate the replica set and create collections
+    image: mongo:7
+    container_name: rl-mongo-init
+    depends_on: [mongo1, mongo2, mongo3]
+    restart: "no"
+    volumes:
+      - ./docker/mongo/init-rs.js:/init-rs.js:ro
+      - ./mongo/01_collections.js:/01_collections.js:ro
+    entrypoint: ["bash", "-c", "sleep 5 && mongosh --host mongo1 /init-rs.js && mongosh --host mongo1 /01_collections.js"]
+
+volumes:
+  pg_primary_data:
+  pg_replica_data:
+  wal_archive:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:

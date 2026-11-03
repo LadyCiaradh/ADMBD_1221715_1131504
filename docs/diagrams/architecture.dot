@@ -1,0 +1,49 @@
+digraph ARCH {
+  graph [rankdir=TB, fontname="Helvetica", nodesep=0.4, ranksep=0.55, compound=true, pad=0.2];
+  node  [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica", fontsize=10];
+  edge  [fontname="Helvetica", fontsize=9];
+
+  rider  [label="Rider app\n(mobile)"];
+  driver [label="Driver app\n(mobile, GPS 1 ping/4 s)"];
+  admin  [label="Back-office\n(admin / support)"];
+
+  lb [label="Load balancer / API gateway\n(TLS termination)", fillcolor="#dde6f5"];
+
+  subgraph cluster_app { label="Application tier (stateless, horizontally scalable)"; style=dashed; fontsize=10;
+    api   [label="REST API\n(trips, users, payments)", fillcolor="#dde6f5"];
+    dispatch [label="Dispatch / matching\nservice", fillcolor="#dde6f5"];
+    track [label="Tracking ingest\nservice", fillcolor="#dde6f5"];
+    batch [label="Batch jobs\n(payouts, invoices, reports)", fillcolor="#dde6f5"];
+  }
+
+  subgraph cluster_sql { label="PostgreSQL 16 + PostGIS (HA)"; style=filled; fillcolor="#fdeaea"; fontsize=10;
+    pgp [label="Primary\n(writes)", fillcolor="#f7c6c9"];
+    pgr [label="Streaming replica\n(sync, failover)", fillcolor="#f7c6c9"];
+    pgx [label="Read replica\n(async, reports)", fillcolor="#f7c6c9"];
+  }
+
+  subgraph cluster_nosql { label="MongoDB 7 replica set"; style=filled; fillcolor="#e9f5e9"; fontsize=10;
+    mp  [label="Primary", fillcolor="#c7e5c7"];
+    ms1 [label="Secondary", fillcolor="#c7e5c7"];
+    ms2 [label="Secondary", fillcolor="#c7e5c7"];
+  }
+
+  bkp [label="Backup storage\n(object store, encrypted, off-site)", shape=cylinder, fillcolor="#fff3cd"];
+  mon [label="Monitoring\n(Prometheus + Grafana)", fillcolor="#eeeeee"];
+
+  rider -> lb; driver -> lb; admin -> lb;
+  lb -> api; lb -> track;
+  api -> dispatch; api -> batch [style=dotted];
+  api -> pgp [label="SQL (OLTP)"];
+  dispatch -> mp [label="geo queries"];
+  dispatch -> api [style=dotted];
+  track -> mp [label="telemetry writes"];
+  api -> mp [label="reviews, chat"];
+  batch -> pgx [label="read-heavy"];
+  pgp -> pgr [label="WAL stream"];
+  pgp -> pgx [label="WAL stream"];
+  mp -> ms1 [label="oplog"]; mp -> ms2 [label="oplog"];
+  pgp -> bkp [label="base backup + WAL archive", style=dashed];
+  ms1 -> bkp [label="mongodump + oplog", style=dashed];
+  mon -> pgp [style=dotted, arrowhead=none]; mon -> mp [style=dotted, arrowhead=none];
+}
