@@ -4,11 +4,15 @@
 
 ChatGPT created by OpenAI was one of the tools used as a helper in the first iteration of the Ride-Hailing Platform project.
 
-## 7.2 Scope of Use
+## 7.2 Scope of Use and Validation
 
-There were only three areas of usage for ChatGPT:
+The following table summarises the tasks supported by ChatGPT and how its outputs were reviewed by the team.
 
-Help with writing and language correction: Spell-checking, grammatical and word choice improvements in the project documents without changing the technical information contained there.
+| Purpose | Project artefacts or tasks | Review and validation |
+|---|---|---|
+| Writing and language correction: spelling, grammar and word choice improvements. | Written project documentation. | The team reviewed the changes to ensure that the original technical meaning was preserved. |
+| Brainstorming: discussing possible approaches and alternatives to support decision-making. | Project planning and technical decision-making tasks. | The team evaluated suggestions against the project requirements. The evaluation of alternatives and final technical decisions remained the team’s responsibility. |
+| Diagram digitization: converting manually drawn diagrams into a digital format without changing their structure. | Digital versions of manually drawn project diagrams. | The team compared the digital diagrams with the original sketches to verify that their structure was preserved. |
 
 Brainstorming: Help with discussion of possible approaches and alternatives during the decision-making process. However, alternative evaluation and technical decisions were made by the team.
 
@@ -29,3 +33,5 @@ The usage of ChatGPT does not substitute the team's liability concerning the des
 The full responsibility for the quality, safety, correctness, consistency and technical adequacy of all the artefacts submitted by the team falls upon the team members, whether some of the artefacts have been generated or improved using GenAI technologies.
 
 ChatGPT was used as an additional source. The ultimate decision-making process concerning the project architecture and technical solutions was made by the team itself.
+
+
