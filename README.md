@@ -26,6 +26,7 @@ The project is organized into two iterations:
 | 1221715 | Jorge Cruz |
 | 1131504 | Joana Soares |
 | 1201806 | João Veríssimo |
+| 1250522 | João Fonseca |
 
 
 ## 3. Technology Stack
