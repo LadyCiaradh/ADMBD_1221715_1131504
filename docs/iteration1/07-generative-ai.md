@@ -18,7 +18,7 @@ Brainstorming: Help with discussion of possible approaches and alternatives duri
 
 Diagram digitization: Assistance in transferring manually drawn diagrams into a digital format without changing the structure.
 
-For example to generate the image docs/iteration1/diagrams/deployment-architecture.png we used the manual draw (docs/interaction1/diagrams/deployment-architecture_draw.png) with the following prompt:
+For example to generate the image docs/iteration1/diagrams/deployment-architecture.png we used the manual draw (docs/interaction1/diagrams/deployment-architecture_draw.jpeg) with the following prompt:
 
 "With Diagram.io style on mind create a professional technical architecture diagram for TVDE (Ride-Hailing Platform). Three client applications should be included in the diagram: Passenger App (Web/Mobile), Driver App (Web/Mobile), and Admin/Support (Web).
 
