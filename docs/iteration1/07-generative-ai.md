@@ -17,6 +17,17 @@ The following table summarises the tasks supported by ChatGPT and how its output
 Brainstorming: Help with discussion of possible approaches and alternatives during the decision-making process. However, alternative evaluation and technical decisions were made by the team.
 
 Diagram digitization: Assistance in transferring manually drawn diagrams into a digital format without changing the structure.
+For example to generate the image docs/interaction1/diagrams/deployment.png we used the manual draw (docs/interaction1/diagrams/deployment_draw.png) with the following prompt:
+"Develop an architectural diagram, with the style of diagram.io, for a ride-sharing application that will run on Microsoft Azure.
+The diagram must contain the following elements:
+Client Applications: Passenger Application (Web/Mobile), Driver Application (Web/Mobile), and Admin/Support Dashboard (Web).
+Backend: A Django REST API that will be running on Azure Container Apps, implementing business logic and handling authentication and data access operations.
+Relational Database: An Azure Database for PostgreSQL for keeping the structured information about passengers, drivers, vehicles, rides, payments, and ratings.
+NoSQL Database: Azure Cosmos DB for MongoDB to keep driver locations, trip events, and notifications.
+Monitoring: Azure Monitor and Application Insights for log management, metrics, and alerts.
+Use HTTPS for describing the interaction of client applications with the backend, as well as the relations between the backend and the two database services.
+Present the diagram in a hierarchical manner, where client applications will be on top, the backend in the middle, databases down, and the monitoring services at the bottom."
+
 
 ## 7.3 Review and Validation
 
