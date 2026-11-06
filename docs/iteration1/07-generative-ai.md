@@ -18,17 +18,23 @@ Brainstorming: Help with discussion of possible approaches and alternatives duri
 
 Diagram digitization: Assistance in transferring manually drawn diagrams into a digital format without changing the structure.
 
-For example to generate the image docs/interaction1/diagrams/deployment.png we used the manual draw (docs/interaction1/diagrams/deployment_draw.png) with the following prompt:
+For example to generate the image docs/iteration1/diagrams/deployment-architecture.png we used the manual draw (docs/interaction1/diagrams/deployment-architecture_draw.png) with the following prompt:
 
-"Develop an architectural diagram, with the style of diagram.io, for a ride-sharing application that will run on Microsoft Azure.
-The diagram must contain the following elements:
-Client Applications: Passenger Application (Web/Mobile), Driver Application (Web/Mobile), and Admin/Support Dashboard (Web).
-Backend: A Django REST API that will be running on Azure Container Apps, implementing business logic and handling authentication and data access operations.
-Relational Database: An Azure Database for PostgreSQL for keeping the structured information about passengers, drivers, vehicles, rides, payments, and ratings.
-NoSQL Database: Azure Cosmos DB for MongoDB to keep driver locations, trip events, and notifications.
-Monitoring: Azure Monitor and Application Insights for log management, metrics, and alerts.
-Use HTTPS for describing the interaction of client applications with the backend, as well as the relations between the backend and the two database services.
-Present the diagram in a hierarchical manner, where client applications will be on top, the backend in the middle, databases down, and the monitoring services at the bottom."
+"With Diagram.io style on mind create a professional technical architecture diagram for TVDE (Ride-Hailing Platform). Three client applications should be included in the diagram: Passenger App (Web/Mobile), Driver App (Web/Mobile), and Admin/Support (Web).
+
+These three client applications send and receive communication requests to/from Django REST API backend using HTTPS protocol.
+
+Django backend is in charge of performing business logic, performing authentication, and working as a data access layer.
+
+Django backend is connected to two types of databases:
+
+PostgreSQL (SQL) stores relational entities such as Passenger, Driver, Vehicle, DriverVehicle, Trip, Payment, and Rating.
+
+MongoDB (NoSQL) stores document collections such as driver_locations, trip_events, and notifications.
+
+Label the communication with PostgreSQL database as "SQL" and communication with MongoDB database as "MongoDB Driver".
+
+Make sure your diagram uses hierarchical structure with client applications on the top level, Django backend at the center, and two databases on the bottom level. Use directional arrows, different component colors, and academic-style design."
 
 
 ## 7.3 Review and Validation
