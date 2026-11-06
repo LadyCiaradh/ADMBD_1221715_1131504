@@ -17,7 +17,9 @@ The following table summarises the tasks supported by ChatGPT and how its output
 Brainstorming: Help with discussion of possible approaches and alternatives during the decision-making process. However, alternative evaluation and technical decisions were made by the team.
 
 Diagram digitization: Assistance in transferring manually drawn diagrams into a digital format without changing the structure.
+
 For example to generate the image docs/interaction1/diagrams/deployment.png we used the manual draw (docs/interaction1/diagrams/deployment_draw.png) with the following prompt:
+
 "Develop an architectural diagram, with the style of diagram.io, for a ride-sharing application that will run on Microsoft Azure.
 The diagram must contain the following elements:
 Client Applications: Passenger Application (Web/Mobile), Driver Application (Web/Mobile), and Admin/Support Dashboard (Web).
